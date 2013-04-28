@@ -1,4 +1,4 @@
-# Streamworker
+= Streamworker
 
 A Rails Engine for using http streaming requests to perform long-running tasks. This allows avoiding the overhead of background workers on cloud providers.
 
