@@ -6,4 +6,4 @@ This probably only makes sense when the long-running tasks are long-running beca
 
 This plugin was extracted from our Shopify apps.
 
-[![Build Status](https://travis-ci.org/lastobelus/streamworker.png)](https://travis-ci.org/lastobelus/streamworker)
+[![Build Status](https://travis-ci.org/lastobelus/streamworker.png?branch=master)](https://travis-ci.org/lastobelus/streamworker)
