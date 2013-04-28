@@ -15,4 +15,5 @@ gemspec
 
 group :test do
   gem "rake"
+  gem 'combustion', '~> 0.4.0'
 end
