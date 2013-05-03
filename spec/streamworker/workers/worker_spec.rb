@@ -42,6 +42,8 @@ describe Streamworker::Workers::Worker do
   end
 
   describe "#each" do
-    specify { expect { subject.each }.to raise_error("Worker subclasses must implement each to yield their output") }
+    subject{ worker.each }
+
+    specify { expect { subject }.to raise_error("Worker subclasses must implement each to yield their output") }
   end
 end

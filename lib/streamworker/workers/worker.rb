@@ -192,6 +192,10 @@ module Streamworker
         %Q{<span class="badge badge-important badge-line-num">#{line_num}</span>}
       end
 
+      def each
+        raise "Worker subclasses must implement each to yield their output"
+      end
+
     end
   end
 end
