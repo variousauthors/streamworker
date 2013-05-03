@@ -12,30 +12,31 @@ describe Streamworker::Workers::Worker do
   end
 
   let(:view_context){ @view_context }
+  let(:worker) { Streamworker::Workers::Worker.new(view_context) }
 
   describe "#header" do
-    subject{ importer.header }
+    subject{ worker.header }
     its(:length){ should > 1024 }
   end
 
   describe "#scroll" do
-    subject{ importer.scroll }
+    subject{ worker.scroll }
     it { should be_valid_markup_fragment }
   end
 
   describe "#header + #footer" do
-    specify { (importer.header + importer.footer('finished')).should be_valid_markup }
+    specify { (worker.header + worker.footer('finished')).should be_valid_markup }
   end
 
 
   describe "#report_line" do
-    subject{ importer.report_line("whatever the string is") }
+    subject{ worker.report_line("whatever the string is") }
     it { should be_valid_markup_fragment }
     it { should include("whatever the string is") }
   end
 
   describe "#report_error" do
-    subject{ importer.report_error("whatever the string is") }
+    subject{ worker.report_error("whatever the string is") }
     it { should be_valid_markup_fragment }
     it { should include("whatever the string is") }
   end
