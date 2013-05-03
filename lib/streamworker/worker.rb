@@ -173,6 +173,10 @@ module Streamworker
       end
 
 
+      def each
+        raise "Worker subclasses must implement each to yield their output"
+      end
+      
       def report_error(str, list=[])
         err = %Q{
             #{error_line_num}

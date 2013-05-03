@@ -18,3 +18,5 @@ require 'capybara/rails'
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
 end
+
+puts RSpec.configuration.inspect
