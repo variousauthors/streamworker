@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/lastobelus/combustion.git
+  revision: c349060cf7c53cf87d0d9402c26d4abd1e298874
+  specs:
+    combustion (0.5.0)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
+      thor (>= 0.14.6)
+
 PATH
   remote: .
   specs:
@@ -46,10 +55,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    combustion (0.4.0)
-      activesupport (>= 3.0.0)
-      railties (>= 3.0.0)
-      thor (>= 0.14.6)
     diff-lcs (1.2.4)
     erubis (2.7.0)
     factory_girl (4.2.0)
@@ -147,7 +152,7 @@ DEPENDENCIES
   activerecord
   be_valid_asset
   capybara
-  combustion (~> 0.4.0)
+  combustion!
   factory_girl_rails (~> 4.0)
   rake
   rspec-rails (~> 2.12)
