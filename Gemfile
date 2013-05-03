@@ -18,6 +18,7 @@ group :test do
   gem 'rspec-rails', '~> 2.12'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara'
+  gem 'be_valid_asset'
 end
 
 # Declare your gem's dependencies in streamworker.gemspec.
