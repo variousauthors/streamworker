@@ -1,11 +1,16 @@
 require 'rubygems'
 require 'bundler'
 
+require 'rails'
 Bundler.require :default, :test
+
+require 'simplecov'
+SimpleCov.start.inspect
 
 require 'capybara/rspec'
 
-Combustion.initialize!
+Combustion.initialize! :active_record, :action_controller,
+                       :action_view, :sprockets
 
 require 'rspec/rails'
 require 'capybara/rails'
