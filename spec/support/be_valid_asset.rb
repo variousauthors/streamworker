@@ -1,3 +1,4 @@
+puts "be_valid_assert in da house"
 include BeValidAsset
 
 BeValidAsset::Configuration.display_invalid_content = true

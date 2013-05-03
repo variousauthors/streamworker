@@ -15,8 +15,8 @@ Combustion.initialize! :active_record, :action_controller,
 require 'rspec/rails'
 require 'capybara/rails'
 
+Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
 end
-
-puts RSpec.configuration.inspect
