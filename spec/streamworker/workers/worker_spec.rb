@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'streamworker/workers/worker'
+
 describe Streamworker::Workers::Worker do
   before(:each) do
     @view_context = double("view_context")

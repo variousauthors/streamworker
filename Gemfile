@@ -19,6 +19,7 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara'
   gem 'be_valid_asset'
+  gem 'simplecov', git: "git://github.com/colszowka/simplecov.git", require: false
 end
 
 # Declare your gem's dependencies in streamworker.gemspec.
@@ -26,4 +27,3 @@ end
 # development dependencies will be added by default to the :development group.
 gemspec
 
-gem 'simplecov', :require => false, :group => :test

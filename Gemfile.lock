@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/colszowka/simplecov.git
+  revision: a3387f7b25100939df6a5af339580cbe3055cdc6
+  specs:
+    simplecov (0.8.0.pre)
+      multi_json
+      simplecov-html (~> 0.7.1)
+
+GIT
   remote: git://github.com/lastobelus/combustion.git
   revision: c349060cf7c53cf87d0d9402c26d4abd1e298874
   specs:
@@ -116,9 +124,6 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
-    simplecov (0.7.1)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
     slim (2.0.0.pre.8)
       temple (~> 0.6.4)
@@ -156,6 +161,6 @@ DEPENDENCIES
   factory_girl_rails (~> 4.0)
   rake
   rspec-rails (~> 2.12)
-  simplecov
+  simplecov!
   sqlite3
   streamworker!

@@ -5,7 +5,15 @@ require 'rails'
 Bundler.require :default, :test
 
 require 'simplecov'
-SimpleCov.start.inspect
+SimpleCov.start  do
+  # add_filter "/spec/"
+  # add_filter "/internal/"
+  add_group "Controllers", "app/controllers"
+  add_group "Streamworker", "lib/streamworker/"
+  add_group "Config", "config"
+end
+
+require 'streamworker'
 
 require 'capybara/rspec'
 require 'be_valid_asset'
