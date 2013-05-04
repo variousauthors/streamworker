@@ -4,9 +4,13 @@ require 'bundler'
 require 'rails'
 Bundler.require :default, :test
 
+puts $LOADED_FEATURES.select {|feature| feature.include?("github")}
 require 'simplecov'
-SimpleCov.start.inspect
+SimpleCov.start 'rails'
 
+puts "pwd: " + Dir.pwd
+puts "files: " + Dir["lib/**/*.rb"].inspect
+Dir["lib/**/*.rb"].each {|file| puts file; puts load(file); }
 require 'capybara/rspec'
 require 'be_valid_asset'
 

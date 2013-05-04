@@ -15,6 +15,13 @@ PATH
       slim (>= 2.0.0.pre.8)
       unicorn
 
+PATH
+  remote: ~/github/simplecov/
+  specs:
+    simplecov (0.8.0.pre)
+      multi_json
+      simplecov-html (~> 0.7.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -116,9 +123,6 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
-    simplecov (0.7.1)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
     slim (2.0.0.pre.8)
       temple (~> 0.6.4)
@@ -156,6 +160,6 @@ DEPENDENCIES
   factory_girl_rails (~> 4.0)
   rake
   rspec-rails (~> 2.12)
-  simplecov
+  simplecov!
   sqlite3
   streamworker!
