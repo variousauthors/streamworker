@@ -7,3 +7,5 @@ This probably only makes sense when the long-running tasks are long-running beca
 This plugin was extracted from our Shopify apps.
 
 [![Build Status](https://travis-ci.org/lastobelus/streamworker.png?branch=master)](https://travis-ci.org/lastobelus/streamworker)
+
+[![Coverage Status](https://coveralls.io/repos/lastobelus/streamworker/badge.png?branch=master)](https://coveralls.io/r/lastobelus/streamworker)
