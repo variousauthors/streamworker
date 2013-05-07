@@ -27,6 +27,8 @@ module Streamworker
         @opts[:unicorn_timeout] ||= 30
         @opts[:unicorn_timeout] = @opts[:unicorn_timeout].to_i
         @num_records = opts[:num_records].to_i || 1
+        @num_success = 0
+        @num_errors = 0
       end
 
 
@@ -48,18 +50,24 @@ module Streamworker
         theoretical_total_time = (projected_queries / QUERIES_PER_BLOCK) * TIME_PER_BLOCK
         theoretical_time_used = (num_queries / QUERIES_PER_BLOCK) * TIME_PER_BLOCK
         factor = actual_time_used.to_f / theoretical_time_used
-        factor = [factor, 1].max if 
+        factor = [factor, 1].max if projected_queries > QUERIES_PER_BLOCK
         total_time = theoretical_total_time * factor
 
+        # puts "--------- calculate_times ---------"
+        # puts "Time.now: #{Time.now.inspect}"
+        # puts "@started_at: #{@started_at.inspect}"
         # puts "QUERIES_PER_BLOCK: #{QUERIES_PER_BLOCK.inspect}"
         # puts "TIME_PER_BLOCK: #{TIME_PER_BLOCK.inspect}"
         # puts "(self.num_records * self.queries_per_record): #{(self.num_records * self.queries_per_record).inspect}"
+        # puts "opts[:unicorn_timeout] : #{opts[:unicorn_timeout] .inspect}"
         # puts "actual_time_used: #{actual_time_used.inspect}"
+        # puts "work_time_remaining: #{work_time_remaining.inspect}"
         # puts "theoretical_total_time: #{theoretical_total_time.inspect}"
         # puts "theoretical_time_used: #{theoretical_time_used.inspect}"
         # puts "factor: #{factor.inspect}"
         # puts "total_time: #{total_time.inspect}"
         # puts "(total_time - actual_time_used): #{(total_time - actual_time_used).inspect}"
+        # puts
         {
           work_time: opts[:unicorn_timeout] .to_i,
           work_time_remaining: work_time_remaining,
@@ -70,12 +78,15 @@ module Streamworker
       end
 
       def imminent_timeout?
+        # puts "--------- imminent_timeout ---------"
+        # puts "work_time_remaining: #{calculate_times[:work_time_remaining].inspect}"
+        # puts "TIMEOUT_MARGIN: #{TIMEOUT_MARGIN.inspect}"
         calculate_times[:work_time_remaining] < TIMEOUT_MARGIN
       end
 
       def report_timeout_footer(msg={})
-        msg[:work_desc] ||= "#{@num_success} records"
-        msg[:how_to_finish] ||= "by resubmitting the last #{@num_records - @num_success} records."
+        msg[:work_desc] ||= "#{num_success} records"
+        msg[:how_to_finish] ||= "resubmit the last #{num_records - num_success} records."
         times = calculate_times
         %Q{ 
           </div>
@@ -152,7 +163,7 @@ module Streamworker
       def scroll
         %Q{<script type="text/javascript">
               scrollBottom();
-              parent.update_stream_worker_progress(#{@num_records}, #{@num_success}, #{@num_errors});
+              parent.update_stream_worker_progress(#{num_records}, #{num_success}, #{num_errors});
             </script>
         }
       end

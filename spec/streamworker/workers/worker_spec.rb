@@ -30,12 +30,16 @@ describe Streamworker::Workers::Worker do
     specify { (worker.header + worker.footer('finished')).should be_valid_markup }
   end
 
+  describe "#queries_per_record" do
+    specify { expect(worker.queries_per_record).to eq 1 } # subclasses define according to their workload
+  end
 
   describe '#calculate_times' do
-    before do
+    before(:each) do
+      Timecop.freeze(Time.local(2012, 7, 7, 7, 0, 0))
       stub_const('Streamworker::Workers::Worker::QUERIES_PER_BLOCK', 50)
       stub_const('Streamworker::Workers::Worker::TIME_PER_BLOCK', 80)
-      Timecop.freeze(Time.local(2012, 7, 7, 7, 0, 0))
+      worker.should_receive(:queries_per_record).at_least(:once).and_return(2)
     end
     after do
       Timecop.return
@@ -44,8 +48,7 @@ describe Streamworker::Workers::Worker do
     subject { worker.calculate_times }
 
     context "less than 1 block total" do
-      before do
-        worker.should_receive(:queries_per_record).at_least(:once).and_return(2)
+      before(:each) do
         worker.should_receive(:num_success).at_least(:once).and_return(7)
         worker.should_receive(:num_errors).at_least(:once).and_return(4)
         Timecop.freeze(Time.local(2012, 7, 7, 7, 1, 0))
@@ -58,10 +61,43 @@ describe Streamworker::Workers::Worker do
       specify { expect(subject[:total_time]).to be_within(0.2).of 109 }
     end
 
-    context "more than 1 block total" do
+    context "more than 1 block total, faster than throttle" do
+      before(:each) do
+        worker.should_receive(:num_success).at_least(:once).and_return(9)
+        worker.should_receive(:num_errors).at_least(:once).and_return(3)
+        Timecop.freeze(Time.local(2012, 7, 7, 7, 1, 0))
+      end
+      let(:worker_opts){ {unicorn_timeout: 100, num_records: 40}}
+      specify { expect(subject[:work_time]).to eq 100 }
+      specify { expect(subject[:work_time_remaining]).to eq 40 }
+      specify { expect(subject[:time_used]).to eq 60 }
+      specify { expect(subject[:time_remaining]).to be_within(0.2).of 140 }
+      specify { expect(subject[:total_time]).to be_within(0.2).of 200 }
     end
 
-    context "unicorn timeout" do
+    context "more than 1 block total, slower than throttle" do
+      before(:each) do
+        worker.should_receive(:num_success).at_least(:once).and_return(20)
+        worker.should_receive(:num_errors).at_least(:once).and_return(0)
+        Timecop.freeze(Time.local(2012, 7, 7, 7, 1, 0))
+      end
+      let(:worker_opts){ {unicorn_timeout: 100, num_records: 75}}
+      specify { expect(worker).not_to be_imminent_timeout }
+      specify { expect(subject[:work_time]).to eq 100 }
+      specify { expect(subject[:work_time_remaining]).to eq 40 }
+      specify { expect(subject[:time_used]).to eq 60 }
+      specify { expect(subject[:time_remaining]).to be_within(0.2).of 180 }
+      specify { expect(subject[:total_time]).to be_within(0.2).of 240 }
+    end
+
+    context "imminent unicorn timeout" do
+      before(:each) do
+        worker.should_receive(:num_success).at_least(:once).and_return(20)
+        worker.should_receive(:num_errors).at_least(:once).and_return(0)
+        Timecop.freeze(Time.local(2012, 7, 7, 7, 1, 36))
+      end
+      let(:worker_opts){ {unicorn_timeout: 100, num_records: 75}}
+      specify { expect(worker).to be_imminent_timeout }
     end
   end
   
@@ -70,6 +106,38 @@ describe Streamworker::Workers::Worker do
     it { should be_valid_markup_fragment }
     it { should include("whatever the string is") }
   end
+
+  describe "success_line_num" do
+    before do
+      worker.should_receive(:line_num).at_least(:once).and_return(937)
+    end
+    subject{ worker.success_line_num}
+    it { should be_valid_markup_fragment }
+    it { should include("937") }
+  end
+
+  describe "error_line_num" do
+    before do
+      worker.should_receive(:line_num).at_least(:once).and_return(416)
+    end
+    subject{ worker.error_line_num}
+    it { should be_valid_markup_fragment }
+    it { should include("416") }
+  end
+
+  describe "#report_timeout_footer" do
+    before do
+      worker.should_receive(:num_records).at_least(:once).and_return(50)
+      worker.should_receive(:num_success).at_least(:once).and_return(20)
+    end
+    # subject{ worker.header + worker.report_timeout_footer }
+    specify { expect(worker.header + worker.report_timeout_footer).to be_valid_markup }
+    specify { expect(worker.header + worker.report_timeout_footer).to include("we have to stop processing this job after 20 records") }
+
+    specify { expect(worker.header + worker.report_timeout_footer).to include("resubmit the last 30 records.")}
+  end
+
+  
 
   describe "#report_error" do
     subject{ worker.report_error("whatever the string is") }
