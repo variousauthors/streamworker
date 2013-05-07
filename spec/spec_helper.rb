@@ -1,8 +1,4 @@
 require 'rubygems'
-require 'bundler'
-
-require 'rails'
-Bundler.require :default, :test
 
 # puts $LOADED_FEATURES.select {|feature| feature.include?("github")}
 require 'simplecov'
@@ -14,8 +10,11 @@ SimpleCov.start  do
   add_group "Config", "config"
 end
 
+require 'bundler'
 
-Dir["lib/**/*.rb"].each {|file| puts file; puts load(file); }
+require 'rails'
+Bundler.require :default, :test
+
 
 require 'capybara/rspec'
 require 'be_valid_asset'

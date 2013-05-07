@@ -24,6 +24,9 @@ module Streamworker
         @repeats = @repeats.to_i
         @fragment = false
         @started_at = Time.now
+        @opts[:unicorn_timeout] ||= 30
+        @opts[:unicorn_timeout] = @opts[:unicorn_timeout].to_i
+        @num_records = opts[:num_records].to_i || 1
       end
 
 
@@ -31,15 +34,34 @@ module Streamworker
         1
       end
 
+      def projected_queries
+        (self.num_records * self.queries_per_record).to_f
+      end
+
+      def num_queries
+        (self.num_success + self.num_errors) .to_f * self.queries_per_record
+      end
+
       def calculate_times
         actual_time_used = Time.now - @started_at
-        work_time_remaining = AppConfig.unicorn_timeout.to_i - actual_time_used
-        theoretical_total_time = ((self.num_records * self.queries_per_record) / QUERIES_PER_BLOCK) * TIME_PER_BLOCK
-        theoretical_time_used = ((self.num_records * self.queries_per_record) / QUERIES_PER_BLOCK) * TIME_PER_BLOCK
-        factor = actual_time_used / theoretical_time_used
+        work_time_remaining = opts[:unicorn_timeout] - actual_time_used
+        theoretical_total_time = (projected_queries / QUERIES_PER_BLOCK) * TIME_PER_BLOCK
+        theoretical_time_used = (num_queries / QUERIES_PER_BLOCK) * TIME_PER_BLOCK
+        factor = actual_time_used.to_f / theoretical_time_used
+        factor = [factor, 1].max if 
         total_time = theoretical_total_time * factor
+
+        # puts "QUERIES_PER_BLOCK: #{QUERIES_PER_BLOCK.inspect}"
+        # puts "TIME_PER_BLOCK: #{TIME_PER_BLOCK.inspect}"
+        # puts "(self.num_records * self.queries_per_record): #{(self.num_records * self.queries_per_record).inspect}"
+        # puts "actual_time_used: #{actual_time_used.inspect}"
+        # puts "theoretical_total_time: #{theoretical_total_time.inspect}"
+        # puts "theoretical_time_used: #{theoretical_time_used.inspect}"
+        # puts "factor: #{factor.inspect}"
+        # puts "total_time: #{total_time.inspect}"
+        # puts "(total_time - actual_time_used): #{(total_time - actual_time_used).inspect}"
         {
-          work_time: AppConfig.unicorn_timeout.to_i,
+          work_time: opts[:unicorn_timeout] .to_i,
           work_time_remaining: work_time_remaining,
           time_used: actual_time_used,
           time_remaining: (total_time - actual_time_used),

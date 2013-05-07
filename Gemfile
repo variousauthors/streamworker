@@ -20,6 +20,7 @@ group :test do
   gem 'capybara'
   gem 'be_valid_asset'
   gem 'simplecov', git: "git://github.com/colszowka/simplecov.git", require: false
+  gem 'timecop'
 end
 
 # Declare your gem's dependencies in streamworker.gemspec.

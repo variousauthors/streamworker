@@ -1,67 +1,0 @@
-o:Net::HTTPOK:
-@readT:@socket0:
-@bodyI"Þ<?xml version="1.0" encoding="UTF-8"?>
-<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
-<env:Body>
-<m:markupvalidationresponse env:encodingStyle="http://www.w3.org/2003/05/soap-encoding" xmlns:m="http://www.w3.org/2005/10/markup-validator">
-    
-    <m:uri>upload://Form Submission</m:uri>
-    <m:checkedby>http://validator.w3.org/</m:checkedby>
-    <m:doctype>-//W3C//DTD XHTML 1.0 Strict//EN</m:doctype>
-    <m:charset>utf-8</m:charset>
-    <m:validity>true</m:validity>
-    <m:errors>
-        <m:errorcount>0</m:errorcount>
-        <m:errorlist>
-          
-        </m:errorlist>
-    </m:errors>
-    <m:warnings>
-        <m:warningcount>1</m:warningcount>
-        <m:warninglist>
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <m:warning><m:messageid>W28</m:messageid><m:message>Using Direct Input mode: UTF-8 character encoding assumed</m:message></m:warning>
-
-
-
-
-
-
-        
-        </m:warninglist>
-    </m:warnings>
-</m:markupvalidationresponse>
-</env:Body>
-</env:Envelope>
-:EF:@header{I"	date;	F[I""Fri, 03 May 2013 19:59:12 GMT;	FI"server;	F[I"Apache/2.2.16 (Debian);	FI"x-w3c-validator-recursion;	F[I"1;	FI"x-w3c-validator-status;	F[I"
-Valid;	FI"x-w3c-validator-errors;	F[I"0;	FI"x-w3c-validator-warnings;	F[I"1;	FI"content-type;	F[I"(application/soap+xml; charset=UTF-8;	FI"connection;	F[I"
-close;	FI"transfer-encoding;	F[I"chunked;	F:
-@codeI"200;	F:@http_versionI"1.1;	F:@messageI"OK;	F:@body_existT
