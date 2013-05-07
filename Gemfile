@@ -21,6 +21,7 @@ group :test do
   gem 'be_valid_asset'
   gem 'simplecov', git: "git://github.com/colszowka/simplecov.git", require: false
   gem 'timecop'
+  gem 'coveralls'
 end
 
 # Declare your gem's dependencies in streamworker.gemspec.
