@@ -116,11 +116,10 @@ describe Streamworker::Workers::Worker do
     describe '#report_fragment' do
       subject{ worker.report_fragment("whatever the string is") }
       context "report line already opened" do
-        before { worker.should_receive(:fragment?).and_return(true)}
+        before { worker.should_receive(:fragment?).at_least(:once).and_return(true)}
         it { should eq "whatever the string is"}
       end
       context "report line not already opened" do
-        before { worker.should_receive(:fragment?).and_return(false)}
         it { should_not be_valid_markup_fragment }
         specify{ expect(subject + worker.close_report_line).to be_valid_markup_fragment}
         it { should include("whatever the string is") }
