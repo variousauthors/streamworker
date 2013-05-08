@@ -105,6 +105,27 @@ describe Streamworker::Workers::Worker do
     subject{ worker.report_line("whatever the string is") }
     it { should be_valid_markup_fragment }
     it { should include("whatever the string is") }
+
+    describe '#open_report_line' do
+      subject{ worker.open_report_line("whatever the string is") }
+      it { should_not be_valid_markup_fragment }
+      specify{ expect(subject + worker.close_report_line).to be_valid_markup_fragment}
+      it { should include("whatever the string is") }
+    end
+
+    describe '#report_fragment' do
+      subject{ worker.report_fragment("whatever the string is") }
+      context "report line already opened" do
+        before { worker.should_receive(:fragment?).and_return(true)}
+        it { should eq "whatever the string is"}
+      end
+      context "report line not already opened" do
+        before { worker.should_receive(:fragment?).and_return(false)}
+        it { should_not be_valid_markup_fragment }
+        specify{ expect(subject + worker.close_report_line).to be_valid_markup_fragment}
+        it { should include("whatever the string is") }
+      end
+    end
   end
 
   describe "success_line_num" do
@@ -150,4 +171,23 @@ describe Streamworker::Workers::Worker do
 
     specify { expect { subject }.to raise_error("Worker subclasses must implement each to yield their output") }
   end
+
+  describe '#set_headers' do
+    before do
+      @response = double('response')
+      @headers = {'Content-Length' => 42}
+      @response.stub(:headers).and_return(@headers)
+      Timecop.freeze(Time.local(2012, 7, 7, 7, 0, 0))
+
+    end
+    subject { worker.set_headers(@response) }
+    it "should set headers for a streaming response" do
+      subject
+      expect( @headers.keys).not_to include('Content-Length')
+      expect( @headers['Last-Modified']).to eq( Time.local(2012, 7, 7, 7, 0, 0).ctime.to_s )
+      expect( @headers['Transfer-Encoding'] ).to eq('chunked')
+      expect( @headers['Cache-Control']).to eq('no-cache')
+    end
+  end
+
 end

@@ -3,7 +3,10 @@ require 'rubygems'
 # puts $LOADED_FEATURES.select {|feature| feature.include?("github")}
 require 'simplecov'
 require 'coveralls'
-SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
 
 SimpleCov.start  do
   add_filter "/spec/"
