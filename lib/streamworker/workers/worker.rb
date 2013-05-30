@@ -18,8 +18,6 @@ module Streamworker
         @view_context = view_context
 
         @title = "Working..."
-            # with these numbers the total delay would be just over 5 minutes
-        @credit_threshold = 28
         @repeats = opts[:repeats] || 1
         @repeats = @repeats.to_i
         @fragment = false

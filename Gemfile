@@ -14,7 +14,8 @@ group :test do
   gem 'actionmailer'
   gem 'actionpack'
   gem "rake"
-  gem 'combustion', git: "git://github.com/lastobelus/combustion.git"
+  gem 'combustion'
+  # gem 'combustion', git: "git://github.com/lastobelus/combustion.git"
   gem 'rspec-rails', '~> 2.12'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara'
@@ -22,6 +23,7 @@ group :test do
   gem 'simplecov', git: "git://github.com/colszowka/simplecov.git", require: false
   gem 'timecop'
   gem 'coveralls'
+  gem 'guard'
 end
 
 # Declare your gem's dependencies in streamworker.gemspec.
