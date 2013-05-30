@@ -23,7 +23,7 @@ group :test do
   gem 'simplecov', git: "git://github.com/colszowka/simplecov.git", require: false
   gem 'timecop'
   gem 'coveralls'
-  gem 'guard'
+  gem 'guard-rspec'
 end
 
 # Declare your gem's dependencies in streamworker.gemspec.
