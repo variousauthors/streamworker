@@ -14,8 +14,9 @@ group :test do
   gem 'actionmailer'
   gem 'actionpack'
   gem "rake"
-  gem 'combustion'
+  # gem 'combustion'
   # gem 'combustion', git: "git://github.com/lastobelus/combustion.git"
+  gem 'combustion', git: "git://github.com/pat/combustion.git"
   gem 'rspec-rails', '~> 2.12'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara'
