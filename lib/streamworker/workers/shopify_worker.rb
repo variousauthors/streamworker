@@ -3,9 +3,10 @@ module Streamworker
     class ShopifyWorker < Worker
 
       attr_accessor :credit_threshold
-      
+
       def initialize(view_context, opts={})
         @credit_threshold = 28
+        super view_context, opts
       end
 
       def with_shopify_session
